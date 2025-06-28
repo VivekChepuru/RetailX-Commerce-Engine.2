@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="${#locale.language}">
+<head>
+    <title>Register</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.3rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 0.7rem;
+            margin-top: 1.5rem;
+            background-color: #4f46e5;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        button:hover {
+            background-color: #4338ca;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Register Customer</h2>
+    <form th:action="@{/customer/register}" th:object="${customer}" method="post">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" th:field="*{firstName}" required/>
+
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" th:field="*{lastName}" required/>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" placeholder="e.g. yourname@gmail.com" required/>
+
+        <label for="mobileNumber">Mobile</label>
+        <input type="text" id="mobileNumber" th:field="*{mobileNumber}" placeholder="Enter 10-digit mobile number" required/>
+
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+</body>
+</html>
