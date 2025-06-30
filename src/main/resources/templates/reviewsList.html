@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <title>Product Reviews</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+    }
+    h2 {
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .no-reviews {
+      margin-top: 20px;
+      font-style: italic;
+      color: #888;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+<h2>Product Reviews</h2>
+
+<div th:if="${#lists.isEmpty(reviews)}">
+  <p class="no-reviews">No reviews found for this product.</p>
+</div>
+
+<table th:if="${!#lists.isEmpty(reviews)}">
+  <thead>
+  <tr>
+    <th>Rating</th>
+    <th>Comment</th>
+    <th>Reviewed At</th>
+    <th>Customer Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="review : ${reviews}">
+    <td th:text="${review.rating}"></td>
+    <td th:text="${review.comment}"></td>
+    <td th:text="${#temporals.format(review.reviewedAt, 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${review.customer.firstName + ' ' + review.customer.lastName}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<a href="/reviews/search">Search Again</a>
+</body>
+</html>

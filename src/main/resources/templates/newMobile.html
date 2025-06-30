@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Update Mobile Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        form {
+            background-color: #f2f2f2;
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: 400px;
+        }
+        label, input {
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h2>Update Customer Mobile Number</h2>
+<form th:action="@{|/customer/${customer.customerId}/update/mobile|}" method="post">
+    <label>New Mobile Number:</label>
+    <input type="text" name="newNumber" placeholder="Enter 10-digit mobile number" required/>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

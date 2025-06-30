@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Customer Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        .details {
+            border: 1px solid #ccc;
+            padding: 1rem;
+            width: 300px;
+            background-color: #f9f9f9;
+        }
+        .details label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h2>Customer Details</h2>
+<div class="details">
+    <p><label>Customer ID:</label> <span th:text="${customer.customerId}"></span></p>
+    <p><label>First Name:</label> <span th:text="${customer.firstName}"></span></p>
+    <p><label>Last Name:</label> <span th:text="${customer.lastName}"></span></p>
+    <p><label>Email:</label> <span th:text="${customer.email}"></span></p>
+    <p><label>Mobile Number:</label> <span th:text="${customer.mobileNumber}"></span></p>
+</div>
+<a href="/">Back to Home</a>
+</body>
+</html>

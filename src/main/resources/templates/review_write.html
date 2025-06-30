@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="${#locale.language}">
+<head>
+    <title>Write a Review</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f7fa;
+            padding: 40px;
+        }
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 15px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Success Message -->
+<div th:if="${successMessage}" style="color: green; font-weight: bold;">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<h2 style="text-align:center;">Submit a Review</h2>
+<form th:action="@{/review/write}" th:object="${reviewRequestDTO}" method="post">
+    <label>Product ID:</label>
+    <label>
+        <input type="number" th:field="*{productId}" placeholder="Enter Product ID" required />
+    </label>
+
+    <label>Customer ID:</label>
+    <label>
+        <input type="number" th:field="*{customerId}" placeholder="Enter Customer ID" required />
+    </label>
+
+    <label>Comment:</label>
+    <label>
+        <textarea th:field="*{comment}" rows="5" placeholder="Write your review here..." required></textarea>
+    </label>
+
+    <label>Rating:</label>
+    <label>
+        <select th:field="*{rating}" required>
+            <option value="">-- Select Rating --</option>
+            <option th:value="FIVE">★★★★★</option>
+            <option th:value="FOUR">★★★★☆</option>
+            <option th:value="THREE">★★★☆☆</option>
+            <option th:value="TWO">★★☆☆☆</option>
+            <option th:value="ONE">★☆☆☆☆</option>
+        </select>
+    </label>
+
+    <button type="submit">Submit Review</button>
+</form>
+</body>
+</html>
