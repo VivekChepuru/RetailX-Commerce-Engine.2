@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <title>Find Reviews</title>
+  <title>Search Reviews by Product ID</title>
 </head>
 <body>
-<h2>Find Reviews by Product ID</h2>
-<form th:action="@{/find}" method="get">
-  <label>Enter Product ID:</label>
-  <label>
-    <input type="text" name="productId" required placeholder="e.g. 101"/>
-  </label>
+<h2>Search Reviews by Product ID</h2>
+
+<form th:action="@{/review/find}" method="get">
+  <label for="productId">Enter Product ID:</label>
+  <input type="number" id="productId" name="productId" placeholder="e.g., 101" required />
   <button type="submit">Search</button>
 </form>
 </body>

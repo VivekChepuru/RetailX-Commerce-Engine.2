@@ -38,12 +38,10 @@ public class ReviewMVC {
     public String searchReviewForm() {
         return "searchReviews"; // the form page
     }
-
+    //The below findReviews method returns the HTML as a response for the above method
     @GetMapping("/find")
     public String findReviews(@RequestParam Long productId, Model model) {
         model.addAttribute("reviews", reviewsService.getReviewsByProductId(productId));
         return "reviewsList"; // list page to show reviews
     }
-
-
 }
