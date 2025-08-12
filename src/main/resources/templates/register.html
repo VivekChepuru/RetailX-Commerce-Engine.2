@@ -5,18 +5,29 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #f3f4f6;
+            background: radial-gradient(circle at center, #1b1b1b 0%, #0d0d0d 100%);
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
         }
         .form-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 2rem 3rem;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(255,140,0,0.5);
             width: 350px;
+            position: relative;
+            z-index: 1;
         }
         h2 {
             text-align: center;
@@ -41,7 +52,7 @@
             width: 100%;
             padding: 0.7rem;
             margin-top: 1.5rem;
-            background-color: #4f46e5;
+            background-color: #ff5722;
             color: white;
             font-weight: bold;
             border: none;
@@ -50,11 +61,13 @@
             transition: background-color 0.2s ease-in-out;
         }
         button:hover {
-            background-color: #4338ca;
+            background-color: #e64a19;
         }
     </style>
 </head>
 <body>
+<canvas id="fireCanvas"></canvas>
+
 <div class="form-container">
     <h2>Register Customer</h2>
     <form th:action="@{/customer/enroll}" th:object="${customer}" method="post">
@@ -70,9 +83,114 @@
         <label for="mobileNumber">Mobile</label>
         <input type="text" id="mobileNumber" th:field="*{mobileNumber}" placeholder="Enter 10-digit mobile number" required/>
 
-
         <button type="submit">Register</button>
     </form>
 </div>
+
+<script>
+    const canvas = document.getElementById('fireCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let fireX = mouseX;
+    let fireY = mouseY;
+    let particles = [];
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    class Particle {
+        constructor(x, y, vx, vy, size, color) {
+            this.x = x;
+            this.y = y;
+            this.vx = vx;
+            this.vy = vy;
+            this.size = size;
+            this.color = color;
+            this.alpha = 1;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += 0.2; // gravity
+            if (this.y >= window.innerHeight - this.size) {
+                this.y = window.innerHeight - this.size;
+                this.vy *= -0.4; // bounce
+                this.vx *= 0.7;  // slow down
+            }
+            this.alpha -= 0.02;
+        }
+        draw() {
+            ctx.globalAlpha = this.alpha;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Smooth follow for fireball
+        fireX += (mouseX - fireX) * 0.15;
+        fireY += (mouseY - fireY) * 0.15;
+
+        // Draw main fireball
+        let fireGradient = ctx.createRadialGradient(fireX, fireY, 0, fireX, fireY, 20);
+        fireGradient.addColorStop(0, "rgba(255,255,0,1)");
+        fireGradient.addColorStop(0.4, "rgba(255,140,0,0.8)");
+        fireGradient.addColorStop(1, "rgba(255,69,0,0.3)");
+
+        ctx.fillStyle = fireGradient;
+        ctx.beginPath();
+        ctx.arc(fireX, fireY, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Emit sparks when moving fast
+        let dx = mouseX - fireX;
+        let dy = mouseY - fireY;
+        let speed = Math.sqrt(dx*dx + dy*dy);
+        if (speed > 5) {
+            for (let i = 0; i < 3; i++) {
+                particles.push(
+                    new Particle(
+                        fireX,
+                        fireY,
+                        (Math.random() - 0.5) * 4,
+                        Math.random() * -2,
+                        Math.random() * 3 + 2,
+                        `hsl(${Math.random()*40}, 100%, 50%)`
+                    )
+                );
+            }
+        }
+
+        // Update and draw particles
+        particles.forEach((p, index) => {
+            p.update();
+            p.draw();
+            if (p.alpha <= 0) {
+                particles.splice(index, 1);
+            }
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+</script>
 </body>
 </html>
